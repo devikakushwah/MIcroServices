@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/hotel")
 public class HotelController {
@@ -26,8 +28,14 @@ public class HotelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Hotel> getHotels(@PathVariable Long id){
+    public ResponseEntity<Hotel> getHotels(@PathVariable String id){
        Hotel hotel = hotelService.getHotel(id);
+        return ResponseEntity.status(HttpStatus.OK).body(hotel);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Hotel>> getAllHotels(){
+        List<Hotel> hotel = hotelService.getAllHotel();
         return ResponseEntity.status(HttpStatus.OK).body(hotel);
     }
 }

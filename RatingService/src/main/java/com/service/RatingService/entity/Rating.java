@@ -1,4 +1,4 @@
-package com.service.Userservice.entity;
+package com.service.RatingService.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,29 +10,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Data
-@Table(name = "user")
-public class User {
+@Table(name = "rating")
+public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long ratingId;
 
-    private String userName;
+    private String feedback;
 
-    private String email;
+    private int rating;
 
-    private String password;
+    private String userId;
 
-    private String roles;
-
+    private String hotelId;
 }

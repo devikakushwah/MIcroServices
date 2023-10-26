@@ -5,6 +5,8 @@ import com.service.HotelService.repository.IHotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class HotelService implements IHotelService{
 
@@ -17,7 +19,12 @@ public class HotelService implements IHotelService{
     }
 
     @Override
-    public Hotel getHotel(Long id) {
-        return hotelRepository.findById(id.toString()).orElseThrow(()-> new RuntimeException("Hotel not found !!"));
+    public Hotel getHotel(String id) {
+        return hotelRepository.findById(id).orElseThrow(()-> new RuntimeException("Hotel not found !!"));
+    }
+
+    @Override
+    public List<Hotel> getAllHotel() {
+        return hotelRepository.findAll();
     }
 }

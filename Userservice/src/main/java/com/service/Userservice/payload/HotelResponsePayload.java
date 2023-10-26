@@ -1,22 +1,19 @@
-package com.service.HotelService.entity;
-
+package com.service.Userservice.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.List;
-
+import lombok.Setter;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "hotel")
-public class Hotel {
+@Getter
+@Setter
+public class HotelResponsePayload {
 
-    @Id
+
     private String id;
 
     private String name;
