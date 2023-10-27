@@ -23,8 +23,8 @@ public class UserService implements IUserService {
     @Autowired
     IUserRepository userRepository;
 
-    @Autowired
-    RestTemplate restTemplate;
+//    @Autowired
+//    RestTemplate restTemplate;
 
     @Autowired
     HotelService hotelService;

@@ -2,6 +2,7 @@ package com.service.Userservice.payload;
 
 import com.service.Userservice.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class UserResponsePayload {
 
     private String userName;
