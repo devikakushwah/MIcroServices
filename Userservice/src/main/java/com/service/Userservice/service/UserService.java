@@ -6,6 +6,8 @@ import com.service.Userservice.payload.HotelResponsePayload;
 import com.service.Userservice.payload.RatingResponsePayload;
 import com.service.Userservice.payload.UserResponsePayload;
 import com.service.Userservice.repository.IUserRepository;
+import com.service.Userservice.service.external.HotelService;
+import com.service.Userservice.service.external.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -24,6 +26,12 @@ public class UserService implements IUserService {
     @Autowired
     RestTemplate restTemplate;
 
+    @Autowired
+    HotelService hotelService;
+
+    @Autowired
+    RatingService ratingService;
+
     @Override
     public User saveUser(User user) {
         return userRepository.save(user);
@@ -35,10 +43,15 @@ public class UserService implements IUserService {
        User user =  userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("User not found !!"));
 
        UserResponsePayload userResponsePayload = new UserResponsePayload(user);
-       RatingResponsePayload[] ratings = restTemplate.getForObject("http://localhost:8083/rating/user/"+ user.getId(), RatingResponsePayload[].class);
-        List<RatingResponsePayload> ratingList  = Arrays.stream(ratings).toList();
+       RatingResponsePayload[] ratings = ratingService.getRating(user.getId());
+//               restTemplate.getForObject("http://RATING-SERVICE/rating/user/"+ user.getId(), RatingResponsePayload[].class);
+
+       List<RatingResponsePayload> ratingList  = Arrays.stream(ratings).toList();
+
        List<RatingResponsePayload> rating1 = ratingList.stream().map(rating -> {
-           HotelResponsePayload hotelResponsePayloads = restTemplate.getForEntity("http://localhost:8082/hotel/"+ rating.getHotelId(), HotelResponsePayload.class).getBody();
+
+//           HotelResponsePayload hotelResponsePayloads = restTemplate.getForEntity("http://HOTEL-SERVICE/hotel/"+ rating.getHotelId(), HotelResponsePayload.class).getBody();
+           HotelResponsePayload hotelResponsePayloads = hotelService.getHotel(rating.getHotelId());
            rating.setHotel(hotelResponsePayloads);
            return rating;
        }).collect(Collectors.toList());
