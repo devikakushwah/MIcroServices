@@ -4,6 +4,8 @@ import com.service.Userservice.entity.User;
 import com.service.Userservice.payload.UserResponsePayload;
 import com.service.Userservice.service.IUserService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/user")
@@ -30,15 +33,20 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(user1);
     }
 
+    int retryCount = 1;
+
     @GetMapping("/{userId}")
-    @CircuitBreaker(name = "RATING-HOTEL-BREAKER", fallbackMethod = "ratingFallBackMethod")
+//    @CircuitBreaker(name = "ratingHotelBreaker", fallbackMethod = "ratingFallBackMethod")
+//    @Retry(name = "ratingHotelService" , fallbackMethod = "ratingFallBackMethod")
+    @RateLimiter(name = "userRateLimiter", fallbackMethod = "ratingFallBackMethod")
     public ResponseEntity<UserResponsePayload> getUser(@PathVariable Long userId){
       UserResponsePayload userResponsePayload = userService.getUser(userId);
+//        logger.info("retry:{} count", retryCount);
       return ResponseEntity.status(HttpStatus.OK).body(userResponsePayload);
     }
 
 //    creating fallback method for circuit breaker if circuit breaker failed called fallback method and return type always same of method
-   public ResponseEntity<UserResponsePayload> ratingFallBackMethod(Long userId, Exception exception){
+    public ResponseEntity<UserResponsePayload> ratingFallBackMethod(Long userId, Exception exception){
 //        logger.info("fallback method is exceuted beacause server is down:{}", exception);
       UserResponsePayload userResponsePayload  =  UserResponsePayload.builder().email("dummy@gmail.com").userName("dummy").roles("dummy").build();
       return new ResponseEntity<>(userResponsePayload,HttpStatus.OK);
