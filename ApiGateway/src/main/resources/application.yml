@@ -9,8 +9,12 @@ spring:
         - id: HOTEL-SERVICE
           uri: lb://HOTEL-SERVICE
           predicates:
-                  - Path=/hotel/**, /staff/**
+            - Path=/hotel/**
         - id: RATING-SERVICE
           uri: lb://RATING-SERVICE
           predicates:
             - Path=/rating/**
+        - id: STAFF-SERVICE
+          uri: lb://STAFF-SERVICE
+          predicates:
+            - Path=/staff/**
