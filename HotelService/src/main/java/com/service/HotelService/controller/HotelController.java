@@ -1,6 +1,7 @@
 package com.service.HotelService.controller;
 
 import com.service.HotelService.entity.Hotel;
+import com.service.HotelService.payload.HotelResponsePayload;
 import com.service.HotelService.service.IHotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,8 @@ public class HotelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Hotel> getHotels(@PathVariable String id){
-       Hotel hotel = hotelService.getHotel(id);
+    public ResponseEntity<HotelResponsePayload> getHotels(@PathVariable String id){
+       HotelResponsePayload hotel = hotelService.getHotel(id);
         return ResponseEntity.status(HttpStatus.OK).body(hotel);
     }
 
